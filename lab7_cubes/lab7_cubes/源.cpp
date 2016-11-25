@@ -1,6 +1,6 @@
-/* GNU gcc compiler on windows 10 x64 platform
-mingw32  gcc version 4.9.2
--std=c++11
+/*
+Visual Studio 2017 RC 
+
 MIT License
 Copyright (c) 2016 <iamwrm>
 <author>           <version>           <date>                   <change>
