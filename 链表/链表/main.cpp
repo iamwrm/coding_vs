@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include<ctime>
 
+#include"functions.cpp"
 
 using namespace std;
 
@@ -11,6 +12,39 @@ typedef struct node_struct
 	struct node_struct *prev;
 	struct node_struct *next;
 } node;
+
+node *create(double kk);
+void insert(double kk, node *head);
+void print_all(node *head);
+int search(node *head, double goal);
+
+
+
+int main()
+{
+	srand(time(NULL));
+	node *a;
+	a = create(20.0);
+
+
+	for (int i = 0; i < 10; i++)
+	{
+		int temp = (double)rand() / RAND_MAX * 10;
+
+		insert(temp, a);
+	}
+
+	insert(6, a);
+	insert(6, a);
+
+
+
+	print_all(a);
+
+	cout << "hehehe:" << search(a, 6);
+	system("pause");
+}
+
 
 node *create(double kk)
 {
@@ -40,13 +74,13 @@ void print_all(node *head)
 {
 	while (head->next != NULL)
 	{
-		cout << head->value << endl;
+		cout <<"-->"<< head->value;
 		head = head->next;
 	}
 	cout << head->value << endl;
 }
 
-int search(node *head,double goal)
+int search(node *head, double goal)
 {
 	int count = 0;
 	while (head->next != NULL)
@@ -58,29 +92,4 @@ int search(node *head,double goal)
 		head = head->next;
 	}
 	return count;
-}
-
-int main()
-{
-	srand(time(NULL));
-	node *a;
-	a = create(20.0);
-
-
-	for (int i = 0; i < 10; i++)
-	{
-		int temp = (double)rand() / RAND_MAX * 10;
-
-		insert(temp, a);
-	}
-
-	insert(6, a);
-	insert(6, a);
-	
-
-	
-	print_all(a);
-
-	cout <<"hehehe:"<< search(a, 6);
-	system("pause");
 }
