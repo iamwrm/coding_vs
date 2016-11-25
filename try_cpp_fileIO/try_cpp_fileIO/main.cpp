@@ -38,6 +38,8 @@ int main()
 	using namespace std;
 
 	string name1;
+	string a111;
+
 	name1 = "123456";
 	cout << name1<<endl;
 
