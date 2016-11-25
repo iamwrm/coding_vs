@@ -73,6 +73,8 @@ int main()
 
 		insert(temp, a);
 	}
+
+	insert(6, a);
 	insert(6, a);
 	
 
