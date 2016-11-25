@@ -4,8 +4,10 @@ mingw32  gcc version 4.9.2
 MIT License
 Copyright (c) 2016 <iamwrm>
 <author>           <version>           <date>                   <change>
-iamwrm 	         1.0             2016-11-20              完成画一个正方体
-iamwrm             1.1             2016-11-21              完成，但是两个连起来的凹陷处中间依然有分隔
+iamwrm 				1.0              2016-11-20              完成画一个正方体
+iamwrm			    1.1              2016-11-21              完成，但是两个连起来的凹陷处中间依然有分隔
+iamwrm				1.2				 2016-11-25			     优化了一下打印函数，避免打印空行
+
 
 description: 打印 3*3 的方块
 keywords:   文件操作
@@ -19,9 +21,10 @@ keywords:   文件操作
 #include <string.h>
 
 // 输出文件前的字符数组的长宽
-#define FILE_ROW 100
+#define FILE_ROW 500
 #define FILE_COL 35
 #define width 6
+#define ini_y 200
 
 void plot_one_cube(int x, int y, char arr[][FILE_COL])
 {
@@ -88,22 +91,30 @@ void writein(FILE *fp, char arr[][FILE_COL])
 {
 	for (int i = 0; i < FILE_ROW; i++)
 	{
+		int isthing =0;
 		for (int j = 0; j < FILE_COL; j++)
 		{
-
-			if (i == FILE_ROW - 1)
-			{
-				fprintf(fp, " ");
-				printf(" ");
-			}
-			else
-			{
-				fprintf(fp, "%c", arr[i][j]);
-				printf("%c", arr[i][j]);
-			}
+			if (arr[i][j] != ' ') isthing = 1;
 		}
-		fprintf(fp, "\n");
-		printf("\n");
+		if (isthing == 1)
+		{
+			for (int j = 0; j < FILE_COL; j++)
+			{
+
+				if (i == FILE_ROW - 1)
+				{
+					fprintf(fp, " ");
+					printf(" ");
+				}
+				else
+				{
+					fprintf(fp, "%c", arr[i][j]);
+					printf("%c", arr[i][j]);
+				}
+			}
+			fprintf(fp, "\n");
+			printf("\n");
+		}
 	}
 }
 
@@ -124,13 +135,10 @@ int main()
 		}
 	}
 
-	//matrix input
-	// int matin[3][3] = {
-	//    1, 1,1,1 , 1, 1, 1, -3, 1,
-	// };
+
 
 	int matin[3][3] = {
-		-5 ,13, 4, 10, 7, 0, 9, -3, 1 };
+		3 ,3, 3, 1, 0, 1, 1, -3, 1 };
 
 	//[y][x]      x  y   第y行 第x列
 	// plot_one_cube(20, 15, arr);
@@ -144,13 +152,13 @@ int main()
 			if (temp >= 0)
 				for (k = 0; k < temp; k++)
 				{
-					plot_one_cube(13 + 7 * j - 3 * i, 45 - 3 * k + 3 * i, arr);
+					plot_one_cube(13 + 7 * j - 3 * i, ini_y - 3 * k + 3 * i, arr);
 				}
 			else
 			{
 				for (k = 0; k < -temp; k++)
 				{
-					plot_one_cube(13 + 7 * j - 3 * i, 45 - 3 * k + 3 * i - 3 * temp, arr);
+					plot_one_cube(13 + 7 * j - 3 * i, ini_y - 3 * k + 3 * i - 3 * temp, arr);
 				}
 			}
 			// writein(fp, arr);
