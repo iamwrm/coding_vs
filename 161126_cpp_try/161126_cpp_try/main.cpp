@@ -8,6 +8,10 @@ private:
 
 public:void show_sex();  // declaration, definition is afterwards
 	   void change_sex(int sex_input);
+private:
+	double score;
+public:
+	void change_score(double score_input);
 };
 
 void student::show_sex()
@@ -34,4 +38,8 @@ int main()
 	
 	std::cin.get();
 	return 0;
+}
+
+void student::change_score(double score_input)
+{
 }
