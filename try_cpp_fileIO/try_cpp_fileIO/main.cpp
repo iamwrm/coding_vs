@@ -8,8 +8,8 @@ iamwrm 				1.0              2016-11-20					练习class private public 之类的
 
 
 
-description: 练习class private public 之类的
-keywords:   class
+description: 
+keywords:   文件操作
 
 */
 
@@ -46,13 +46,8 @@ int main()
 	mystring h1;
 	h1.length = 5;
 
-
 	h1.changesex(3);
-
 	cout << h1.printsex()<<endl;
-
-	h1.changesex(3);
-	cout << h1.printsex() << endl;
 	cout<<h1.name;
 
 
