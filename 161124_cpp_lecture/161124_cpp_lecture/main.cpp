@@ -6,5 +6,7 @@ int main() {
 	using namespace std;
 	cout << "heheheh" << endl;
 	getchar();
+	getchar();
+	getchar();
 
 }
