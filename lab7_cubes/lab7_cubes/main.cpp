@@ -13,8 +13,8 @@ description: 打印 3*3 的方块
 keywords:   文件操作
 
 */
-#define _CRT_NONSTDC_NO_WARNINGS
-#define _CRT_SECURE_NO_WARNINGS
+//#define _CRT_NONSTDC_NO_WARNINGS
+//#define _CRT_SECURE_NO_WARNINGS
 #include "stdio.h"
 #include "stdlib.h"
 #include "math.h"
@@ -138,10 +138,10 @@ int main()
 
 
 	int matin[3][3] = {
-		3 ,6, 3, 1, 0, 1, 1, -3, 1 };
+		3 ,-2, 3, 1, 0, 1, 1, -3, 1 };
 
-	//[y][x]      x  y   第y行 第x列
-	// plot_one_cube(20, 15, arr);
+	/*[y][x]      x  y   第y行 第x列
+	 plot_one_cube(20, 15, arr);*/
 	int i, j, k;
 	for (i = 0; i < 3; i++)
 	{
@@ -167,8 +167,8 @@ int main()
 
 	// 将数组写入txt
 	writein(fp, arr);
-	// getchar();
-	//close file
+	/* getchar();
+	close file*/
 	fclose(fp);
 	return 0;
 }
