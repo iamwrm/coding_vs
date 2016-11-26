@@ -27,7 +27,7 @@ int main()
 	yc.change_sex(1);
 	yc.show_sex();
 
-
+	std::cin.get();
 	std::cin.get();
 	return 0;
 }
