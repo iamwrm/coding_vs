@@ -24,7 +24,11 @@ void student::change_sex(int sex_input)
 int main()
 {
 	student yc;
-	yc.change_sex(1);
+
+	int xx;
+	std::cin >> xx;
+
+	yc.change_sex(xx);
 	yc.show_sex();
 
 	
