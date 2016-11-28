@@ -3,6 +3,9 @@
 #include <ctime>
 using namespace std;
 #define N 10
+
+void my_bubblesort(char *arr, int len);
+
 class player
 {
     char hand[N];
@@ -18,7 +21,6 @@ class player
 //初始化手牌和场上牌
 void player::ini()
 {
-    const int MYSWITCH = 1;
 
     for (int i = 0; i < N; i++)
     {
@@ -29,17 +31,24 @@ void player::ini()
         exist_card[i] = '0';
     }
 
-    if (MYSWITCH == 1)
+    srand(time(NULL));
+    for (int i = 0; i < N; i++)
     {
-        srand(time(NULL));
+        hand[i] = (int)((double)rand() / RAND_MAX * 9) + '1';
+    }
+    my_bubblesort(hand, N);
 
-        for (int i = 0; i < N; i++)
+    for (int i = 0; i < N; i++)
+    {
+        if (hand[i] == '8')
         {
-            hand[i] = (int)((double)rand()/RAND_MAX*9)+'1';
+            hand[i] = 'm';
+        }
+        else if (hand[i] == '9')
+        {
+            hand[i] = 'b';
         }
     }
-
-    
 }
 //arg=1 上帝视角   arg=2 对手视角
 void player::show(int arg)
@@ -95,5 +104,23 @@ int player::change_card(int position, char card)
     {
         cout << "error: there already exists a card";
         return 0;
+    }
+}
+
+//自定义排序
+void my_bubblesort(char *arr, int len)
+{
+    for (int i = 0; i < len; i++)
+    {
+        for (int j = 0; j < len - i - 1; j++)
+        {
+            if (*(arr + j) > *(arr + j + 1))
+            {
+                char temp;
+                temp = *(arr + j);
+                *(arr + j) = *(arr + j + 1);
+                *(arr + j + 1) = temp;
+            }
+        }
     }
 }
