@@ -68,6 +68,55 @@ public:
 
 
 	}
+	player()
+	{
+		string name_input = "xxx";
+		score = 0;
+		name = name_input;
+		recent_card = '0';
+
+		for (int i = 0; i < N; i++)
+		{
+			hand[i] = '0';
+		}
+		for (int i = 0; i < N; i++)
+		{
+			exist_card[i] = '0';
+		}
+		for (int i = 0; i < N; i++)
+		{
+			bolted_card[i] = '0';
+		}
+
+		//initialize hand
+		first_card = hand[0] = rand() % 6 + '2';
+		score += first_card - '0';
+		for (int i = 1; i < N; i++)
+		{
+			hand[i] = rand() % 9 + '1';
+		}
+		my_bubblesort(hand, N);
+
+		//convert 8 9 into m b
+		for (int i = 0; i < N; i++)
+		{
+			if (hand[i] == '8')
+			{
+				hand[i] = 'm';
+			}
+			else if (hand[i] == '9')
+			{
+				hand[i] = 'b';
+			}
+		}
+
+		for (int i = 0; i < N; i++)
+		{
+			exist_card[i] = '0';
+		}
+
+
+	}
 
 	int bolt(char input);
 	int clean_bolt();
@@ -114,7 +163,7 @@ void player::show(int arg)
 		cout << "/";
 		for (int i = 0; i < N; i++)
 		{
-			if (exist_card[i] != '0')
+			if ((exist_card[i] != '0') && (exist_card[i] != 'b') && (exist_card[i] != 'm'))
 			{
 				cout << exist_card[i];
 			}
@@ -224,8 +273,8 @@ int main()
 
 
 	cout << "Welcome to BLADE!" << '\n';
-	John.show(1);//John
-	Tom.show(1);//Tom
+	John.show(2);//John
+	Tom.show(2);//Tom
 
 	cout << "John gets " << John.first_card << endl;
 	cout << "Tom  gets " << Tom.first_card << endl;
@@ -245,6 +294,8 @@ int main()
 	}
 	cout << p1.name << " goes first\n\n\n\n";
 
+	_sleep(SLEEPTIME);
+
 	int Round = 1;
 	//=============================================
 	while (1)
@@ -253,9 +304,15 @@ int main()
 		cout << "" << "Round " << Round << "   " << p1.name << " " << p1.score << "   " << p2.name << " " << p2.score << endl;
 		p1.show(1);
 		p2.show(2);
+
+		if (Round > 1 && (p2.recent_card == '0'))
+		{
+			cout << "\nLast time the opponent passed\n";
+		}
+
 		cout << p1.name << " plays: ";
 		ju_return = judge(&p1, &p2);
-		if (ju_return == 99)
+		if ((p2.recent_card == '0') && (p1.recent_card == '0')&&(Round>1))
 		{
 			break;
 		}
@@ -267,9 +324,15 @@ int main()
 		cout << "" << "Round " << Round << "   " << p1.name << " " << p1.score << "   " << p2.name << " " << p2.score << endl;
 		p1.show(2);
 		p2.show(1);
+
+		if (Round > 1 && (p1.recent_card == '0'))
+		{
+			cout << "\nLast time the opponent passed\n";
+		}
+
 		cout << p2.name << " plays: ";
 		ju_return = judge(&p2, &p1);
-		if (ju_return == 99)
+		if ((p2.recent_card == '0') && (p1.recent_card == '0') && (Round>1))
 		{
 			break;
 		}
@@ -428,7 +491,7 @@ int judge(player *p_this, player* p_prev)
 		}
 		if (flag == 1)
 		{
-			cout << "\nrecent card:" << p_prev->recent_card << endl;
+			cout << "\nlast card:" << p_prev->recent_card << endl;
 			cout << "not big enough\n";
 			continue;
 		}
