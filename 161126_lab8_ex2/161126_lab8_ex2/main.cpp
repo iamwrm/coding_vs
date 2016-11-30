@@ -11,17 +11,19 @@ void my_bubblesort(char *arr, int len);
 
 class player
 {
-private:
+public:
 	char hand[N];
 	char exist_card[N];
 	char last_bolted = '0';
+
 	int score;
 	int change_card(int position, char card);
-	string name;
 
-public:
+
+
 	player(string name_input)
 	{
+		score = 0;
 		name = name_input;
 		for (int i = 0; i < N; i++)
 		{
@@ -32,12 +34,16 @@ public:
 			exist_card[i] = '0';
 		}
 
-		for (int i = 0; i < N; i++)
+		//initialize hand
+		first_card = hand[0] = rand() % 7 + '1';
+		score += first_card - '0';
+		for (int i = 1; i < N; i++)
 		{
 			hand[i] = rand() % 9 + '1';
 		}
 		my_bubblesort(hand, N);
 
+		//convert 8 9 into m b
 		for (int i = 0; i < N; i++)
 		{
 			if (hand[i] == '8')
@@ -49,7 +55,16 @@ public:
 				hand[i] = 'b';
 			}
 		}
+
+		for (int i = 0; i < N; i++)
+		{
+			exist_card[i] = '0';
+		}
+
+
 	}
+	string name;
+	char first_card = '0';
 	void show(int arg);
 	int paly_card(char card);
 };
@@ -59,7 +74,7 @@ public:
 //arg=1 上帝视角   arg=2 对手视角
 void player::show(int arg)
 {
-	cout << name<<": ";
+	cout << name << ": ";
 	if (arg == 1)
 	{
 		for (int i = 0; i < N; i++)
@@ -157,26 +172,38 @@ int main()
 	srand(time(NULL));
 	string name1 = "John";
 	string name2 = "Tom";
+	player John(name1), Tom(name2);
 
-	player p1(name1), p2(name2);
-	
+
 	cout << "Welcome to BLADE!" << '\n';
-	
+	John.show(1);//John
+	Tom.show(1);//Tom
+
+	cout << "John gets " << John.first_card << endl;
+	cout << "Tom  gets " << Tom.first_card << endl;
+
+	player p1(name1), p2(name1);
+
+	//determine who goes first
+	if (John.first_card >= Tom.first_card)
+	{
+		p1 = John;
+		p2 = Tom;
+	}
+	else
+	{
+		p1 = Tom;
+		p2 = John;
+	}
+	cout << p1.name << " goes first\n";
+
+	int Round = 1;
 	while (1)
 	{
-		p2.show(1);
-		p1.show(1);
+		cout << "Round " << Round << "   " << p1.name << " " << p1.score << "   " << p2.name << " " << p2.score;
 
-		char p2_input;
-		cin >> p2_input;
-		p2.paly_card(p2_input);
-
-		p2.show(1);
-		p1.show(1);
-
-		char p1_input;
-		cin >> p1_input;
-		p1.paly_card(p1_input);
+		cin.get();
+		Round++;
 	}
 
 	cin.get();
@@ -184,7 +211,7 @@ int main()
 }
 
 
-	
+
 void my_bubblesort(char *arr, int len)
 {
 	for (int i = 0; i < len; i++)
