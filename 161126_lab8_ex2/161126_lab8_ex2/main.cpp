@@ -9,22 +9,22 @@ using namespace std;
 void my_bubblesort(char *arr, int len);
 
 
+
 class player
 {
 public:
 	char hand[N];
 	char exist_card[N];
-	char last_bolted = '0';
-
+	char bolted_card[N];
 	int score;
-	int change_card(int position, char card);
-
-
+	char recent_card;
 
 	player(string name_input)
 	{
 		score = 0;
 		name = name_input;
+		recent_card = '0';
+
 		for (int i = 0; i < N; i++)
 		{
 			hand[i] = '0';
@@ -33,9 +33,13 @@ public:
 		{
 			exist_card[i] = '0';
 		}
+		for (int i = 0; i < N; i++)
+		{
+			bolted_card[i] = '0';
+		}
 
 		//initialize hand
-		first_card = hand[0] = rand() % 7 + '1';
+		first_card = hand[0] = rand() % 6 + '2';
 		score += first_card - '0';
 		for (int i = 1; i < N; i++)
 		{
@@ -63,10 +67,12 @@ public:
 
 
 	}
+
+	int bolt(char input);
 	string name;
 	char first_card = '0';
 	void show(int arg);
-	int paly_card(char card);
+	int play_card(char card);
 };
 
 
@@ -115,21 +121,8 @@ void player::show(int arg)
 	}
 }
 
-int player::change_card(int position, char card)
-{
-	if (hand[position] == '0')
-	{
-		hand[position] = card;
-		return 1;
-	}
-	else
-	{
-		cout << "error: there already exists a card";
-		return 0;
-	}
-}
 
-int player::paly_card(char card_input)
+int player::play_card(char card_input)
 {
 	int found = 0;
 	int i_hand = 0;
@@ -144,28 +137,62 @@ int player::paly_card(char card_input)
 
 	if (found == 0)
 	{
-		cout << "error: no such card";
+		cout << "error: no such card\n";
 		return 0;// 0 means failed
 	}
 
-	int i_ec = 0;// index of existed card
-	while (exist_card[i_ec] != '0')
+	if (found == 1)
 	{
-		i_ec++;
+		int i_ec = 0;// index of existed card
+		while (exist_card[i_ec] != '0')
+		{
+			i_ec++;
+		}
+		exist_card[i_ec] = card_input;
+		hand[i_hand] = '0';
 	}
-	exist_card[i_ec] = card_input;
-	hand[i_hand] = '0';
 
 	return 1;// 1 means succeed
 }
 
-//自定义排序
+int player::bolt(char card_input)
+{
+	int found = 0;
+	int i_hand = 0;
+	for (i_hand = 0; i_hand < N; i_hand++)
+	{
+		if (exist_card[i_hand] == card_input)
+		{
+			found = 1;
+			break;
+		}
+	}
+
+	if (found == 0)
+	{
+		cout << "error: no such exist card\n";
+		return 0;// 0 means failed
+	}
+
+	if (found == 1)
+	{
+		int i_ec = 0;// index of existed card
+		while (bolted_card[i_ec] != '0')
+		{
+			i_ec++;
+		}
+		bolted_card[i_ec] = card_input;
+		exist_card[i_hand] = '0';
+		score -= card_input - '0';
+	}
+
+	return 1;// 1 means succeed
+}
 
 
 
 
-
-
+int judge(player *p_this, player* p_prev);
 
 int main()
 {
@@ -173,6 +200,7 @@ int main()
 	string name1 = "John";
 	string name2 = "Tom";
 	player John(name1), Tom(name2);
+
 
 
 	cout << "Welcome to BLADE!" << '\n';
@@ -195,15 +223,30 @@ int main()
 		p1 = Tom;
 		p2 = John;
 	}
-	cout << p1.name << " goes first\n";
+	cout << p1.name << " goes first\n\n\n\n";
 
 	int Round = 1;
+	//=============================================
 	while (1)
 	{
-		cout << "Round " << Round << "   " << p1.name << " " << p1.score << "   " << p2.name << " " << p2.score;
+		cout << "\n\n" << "Round " << Round << "   " << p1.name << " " << p1.score << "   " << p2.name << " " << p2.score << endl;
+		p1.show(1);
+		p2.show(1);
+		cout << p1.name << " plays: ";
 
-		cin.get();
+
+		judge(&p1, &p2);
+
 		Round++;
+
+
+		cout << "\n\n" << "Round " << Round << "   " << p1.name << " " << p1.score << "   " << p2.name << " " << p2.score << endl;
+		p1.show(1);
+		p2.show(1);
+		cout << p2.name << " plays: ";
+		judge(&p2, &p1);
+		Round++;
+
 	}
 
 	cin.get();
@@ -230,3 +273,63 @@ void my_bubblesort(char *arr, int len)
 }
 
 
+int judge(player *p_this, player* p_prev)
+{
+	char card_input;
+	while (1)
+	{
+
+		cin >> card_input;
+		int flag = -1;
+
+		switch (card_input)
+		{
+		case '1':case '2':case '3':case '4':case '5':case '6':case '7':
+		{
+			if (card_input < p_prev->recent_card)
+			{
+				flag = 1;//重来
+				break;
+			}
+
+			if (p_this->play_card(card_input) != 0)
+			{
+				flag = 0;//success
+				p_this->score += card_input - '0';
+				break;
+			}
+			else
+				flag = 2;
+
+			break;
+		}
+		case 'b':
+		{
+			p_prev->bolt(card_input);
+			flag = 0;
+			break;
+		}
+
+
+		}// switch
+
+
+		if (flag == 0)//success
+		{
+			break;
+		}
+		if (flag == 1)
+		{
+			cout << "not big enough\n";
+			continue;
+		}
+		if (flag == 2)
+		{
+			continue;
+		}
+
+	}//while (1)
+
+	p_this->recent_card = card_input;
+	return 1;
+}
