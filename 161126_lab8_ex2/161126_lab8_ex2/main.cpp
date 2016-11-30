@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <string>
 #define N 10
 using namespace std;
 
@@ -10,53 +11,55 @@ void my_bubblesort(char *arr, int len);
 
 class player
 {
+private:
 	char hand[N];
 	char exist_card[N];
 	char last_bolted = '0';
 	int score;
 	int change_card(int position, char card);
+	string name;
 
 public:
-	void ini();
+	player(string name_input)
+	{
+		name = name_input;
+		for (int i = 0; i < N; i++)
+		{
+			hand[i] = '0';
+		}
+		for (int i = 0; i < N; i++)
+		{
+			exist_card[i] = '0';
+		}
+
+		for (int i = 0; i < N; i++)
+		{
+			hand[i] = rand() % 9 + '1';
+		}
+		my_bubblesort(hand, N);
+
+		for (int i = 0; i < N; i++)
+		{
+			if (hand[i] == '8')
+			{
+				hand[i] = 'm';
+			}
+			else if (hand[i] == '9')
+			{
+				hand[i] = 'b';
+			}
+		}
+	}
 	void show(int arg);
 	int paly_card(char card);
 };
 
-//初始化手牌和场上牌
-void player::ini()
-{
 
-	for (int i = 0; i < N; i++)
-	{
-		hand[i] = '0';
-	}
-	for (int i = 0; i < N; i++)
-	{
-		exist_card[i] = '0';
-	}
-
-	for (int i = 0; i < N; i++)
-	{
-		hand[i] = rand() % 9 + '1';
-	}
-	my_bubblesort(hand, N);
-
-	for (int i = 0; i < N; i++)
-	{
-		if (hand[i] == '8')
-		{
-			hand[i] = 'm';
-		}
-		else if (hand[i] == '9')
-		{
-			hand[i] = 'b';
-		}
-	}
-}
 
 //arg=1 上帝视角   arg=2 对手视角
 void player::show(int arg)
 {
+	cout << name<<": ";
 	if (arg == 1)
 	{
 		for (int i = 0; i < N; i++)
@@ -151,13 +154,14 @@ int player::paly_card(char card_input)
 
 int main()
 {
-	player p1, p2;
 	srand(time(NULL));
+	string name1 = "John";
+	string name2 = "Tom";
 
-	p1.ini();
-	p2.ini();
-
-
+	player p1(name1), p2(name2);
+	
+	cout << "Welcome to BLADE!" << '\n';
+	
 	while (1)
 	{
 		p2.show(1);
