@@ -3,6 +3,7 @@
 #include <ctime>
 #include <string>
 #define N 10
+#define SLEEPTIME 3000
 using namespace std;
 
 
@@ -69,6 +70,7 @@ public:
 	}
 
 	int bolt(char input);
+	int clean_bolt();
 	string name;
 	char first_card = '0';
 	void show(int arg);
@@ -93,7 +95,7 @@ void player::show(int arg)
 		cout << "/";
 		for (int i = 0; i < N; i++)
 		{
-			if (exist_card[i] != '0')
+			if ((exist_card[i] != '0')&&(exist_card[i] != 'b') && (exist_card[i] != 'm'))
 			{
 				cout << exist_card[i];
 			}
@@ -189,7 +191,25 @@ int player::bolt(char card_input)
 	return 1;// 1 means succeed
 }
 
+int player::clean_bolt()
+{
+	for (int i = 0; i < N; i++)
+	{
+		if (bolted_card[i] != '0')
+		{
+			int i_ec = 0;// index of existed card
+			while (exist_card[i_ec] != '0')
+			{
+				i_ec++;
+			}
+			exist_card[i_ec] = bolted_card[i];
+			score += bolted_card[i] - '0';
+			bolted_card[i] = '0';
 
+		}
+	}
+	return 0;
+}
 
 
 int judge(player *p_this, player* p_prev);
@@ -229,26 +249,52 @@ int main()
 	//=============================================
 	while (1)
 	{
-		cout << "\n\n" << "Round " << Round << "   " << p1.name << " " << p1.score << "   " << p2.name << " " << p2.score << endl;
+		int ju_return;
+		cout << "" << "Round " << Round << "   " << p1.name << " " << p1.score << "   " << p2.name << " " << p2.score << endl;
 		p1.show(1);
-		p2.show(1);
+		p2.show(2);
 		cout << p1.name << " plays: ";
-
-
-		judge(&p1, &p2);
-
+		ju_return = judge(&p1, &p2);
+		if (ju_return == 99)
+		{
+			break;
+		}
 		Round++;
+		system("cls");
+		_sleep(SLEEPTIME);
 
 
-		cout << "\n\n" << "Round " << Round << "   " << p1.name << " " << p1.score << "   " << p2.name << " " << p2.score << endl;
-		p1.show(1);
+		cout << "" << "Round " << Round << "   " << p1.name << " " << p1.score << "   " << p2.name << " " << p2.score << endl;
+		p1.show(2);
 		p2.show(1);
 		cout << p2.name << " plays: ";
-		judge(&p2, &p1);
+		ju_return = judge(&p2, &p1);
+		if (ju_return == 99)
+		{
+			break;
+		}
+		
 		Round++;
+		system("cls");
+		_sleep(SLEEPTIME);
 
+	}//while (1)
+
+
+
+
+	cout << "\nGames over\n";
+	if (p1.score < p2.score)
+	{
+		player temp(name1);
+		temp = p1;
+		p1 = p2;
+		p2 = temp;
 	}
 
+	cout << p1.name << " wins\n";
+
+	cin.get();
 	cin.get();
 
 }
@@ -275,6 +321,7 @@ void my_bubblesort(char *arr, int len)
 
 int judge(player *p_this, player* p_prev)
 {
+
 	char card_input;
 	while (1)
 	{
@@ -284,7 +331,7 @@ int judge(player *p_this, player* p_prev)
 
 		switch (card_input)
 		{
-		case '1':case '2':case '3':case '4':case '5':case '6':case '7':
+		case '2':case '3':case '4':case '5':case '6':case '7':
 		{
 			if (card_input < p_prev->recent_card)
 			{
@@ -305,12 +352,66 @@ int judge(player *p_this, player* p_prev)
 		}
 		case 'b':
 		{
-			p_prev->bolt(card_input);
+			p_prev->bolt(p_prev->recent_card);
+			p_this->play_card(card_input);
+			flag = 0;
+			break;
+		}
+		case '1':
+		{
+			if (p_this->bolted_card[0] != '0')
+			{
+				p_this->clean_bolt();
+				flag = 0;
+				break;
+			}
+			else
+			{
+				if (card_input < p_prev->recent_card)
+				{
+					flag = 1;//ÖØÀ´
+					break;
+				}
+
+				if (p_this->play_card(card_input) != 0)
+				{
+					flag = 0;//success
+					p_this->score += card_input - '0';
+					break;
+				}
+				else
+					flag = 2;
+
+				break;
+
+			}
+		}
+		case 'm':
+		{
+
+
+			int temp;
+			temp = p_this->score;
+			p_this->score = p_prev->score;
+			p_prev->score = temp;
+			p_this->play_card(card_input);
 			flag = 0;
 			break;
 		}
 
+		case '0': {
+			if (p_prev->recent_card == '0')
+			{
+				return 99;
+			}
+			else
+			{
+				flag = 0;
+				p_this->recent_card = '0';
+				break;
+			}
 
+		}
 		}// switch
 
 
@@ -320,6 +421,7 @@ int judge(player *p_this, player* p_prev)
 		}
 		if (flag == 1)
 		{
+			cout << "\nrecent card:" << p_prev->recent_card << endl;
 			cout << "not big enough\n";
 			continue;
 		}
@@ -328,8 +430,9 @@ int judge(player *p_this, player* p_prev)
 			continue;
 		}
 
-	}//while (1)
 
-	p_this->recent_card = card_input;
+	}//while (1)
+	if ((card_input != 'm') && (card_input != 'b'))
+		p_this->recent_card = card_input;
 	return 1;
 }
