@@ -95,7 +95,7 @@ void player::show(int arg)
 		cout << "/";
 		for (int i = 0; i < N; i++)
 		{
-			if ((exist_card[i] != '0')&&(exist_card[i] != 'b') && (exist_card[i] != 'm'))
+			if ((exist_card[i] != '0') && (exist_card[i] != 'b') && (exist_card[i] != 'm'))
 			{
 				cout << exist_card[i];
 			}
@@ -273,7 +273,7 @@ int main()
 		{
 			break;
 		}
-		
+
 		Round++;
 		system("cls");
 		_sleep(SLEEPTIME);
@@ -328,6 +328,13 @@ int judge(player *p_this, player* p_prev)
 
 		cin >> card_input;
 		int flag = -1;
+
+		if (!((card_input == 'm') || (card_input == '0') || (card_input == 'b') || ((card_input >= '1') && (card_input <= '7'))))
+		{
+			cout << "invalid input\n";
+			continue;
+		}
+
 
 		switch (card_input)
 		{
