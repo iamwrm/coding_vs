@@ -3,7 +3,7 @@
 #include <ctime>
 #include <string>
 #define N 10
-#define SLEEPTIME 3
+#define SLEEPTIME 3000
 using namespace std;
 
 

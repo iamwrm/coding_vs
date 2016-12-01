@@ -1,0 +1,29 @@
+#include<iostream>
+
+
+
+using namespace std;
+
+
+void increase(int *   &b)
+{
+	*(++b) *= 2;
+}
+//int *a,b
+
+int main()
+{
+	int *a,c;
+	int heh[10];
+
+	a = heh;
+	*a = 3;
+	*(a + 1) = 4;
+	*(a + 2) = 5;
+	increase(a);
+
+
+	cout << *a;
+	cin.get();
+	return 0;
+}

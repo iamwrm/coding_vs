@@ -18,13 +18,10 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="test3.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{0CA7D437-DA86-4455-812B-B36822C7D8ED}</ProjectGuid>
+    <ProjectGuid>{A389A2B0-6FCC-480C-9056-2CE05D5D6CF0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My161201_vg101_lecture</RootNamespace>
+    <RootNamespace>My161201_vg101_try_cpp</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -140,6 +137,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
