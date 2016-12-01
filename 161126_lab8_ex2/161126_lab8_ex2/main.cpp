@@ -3,7 +3,7 @@
 #include <ctime>
 #include <string>
 #define N 10
-#define SLEEPTIME 3000
+#define SLEEPTIME 3
 using namespace std;
 
 
@@ -18,13 +18,14 @@ public:
 	char exist_card[N];
 	char bolted_card[N];
 	int score;
+	int score_ini;
 	char recent_card;
 
 	player(string name_input)
 	{
 		score = 0;
 		name = name_input;
-		recent_card = '0';
+		recent_card = '1';
 
 		for (int i = 0; i < N; i++)
 		{
@@ -42,6 +43,7 @@ public:
 		//initialize hand
 		first_card = hand[0] = rand() % 6 + '2';
 		score += first_card - '0';
+		score_ini = score;
 		for (int i = 1; i < N; i++)
 		{
 			hand[i] = rand() % 9 + '1';
@@ -273,6 +275,8 @@ int main()
 
 
 	cout << "Welcome to BLADE!" << '\n';
+	cout << "There are two players\nIf you have no cards to use, you can type 0 to pass\nIf the opponent then also type 0\n"
+		<< "then the game ends \nand the player who has the higher current score wins\n\n";
 	John.show(2);//John
 	Tom.show(2);//Tom
 
@@ -312,7 +316,7 @@ int main()
 
 		cout << p1.name << " plays: ";
 		ju_return = judge(&p1, &p2);
-		if ((p2.recent_card == '0') && (p1.recent_card == '0')&&(Round>1))
+		if ((p2.recent_card == '0') && (p1.recent_card == '0'))
 		{
 			break;
 		}
@@ -332,7 +336,7 @@ int main()
 
 		cout << p2.name << " plays: ";
 		ju_return = judge(&p2, &p1);
-		if ((p2.recent_card == '0') && (p1.recent_card == '0') && (Round>1))
+		if ((p2.recent_card == '0') && (p1.recent_card == '0'))
 		{
 			break;
 		}
@@ -347,6 +351,8 @@ int main()
 
 
 	cout << "\nGames over\n";
+	cout << p1.name << ": " << p1.score << endl;
+	cout << p2.name << ": " << p2.score << endl;
 	if (p1.score < p2.score)
 	{
 		player temp(name1);
@@ -403,9 +409,11 @@ int judge(player *p_this, player* p_prev)
 		{
 		case '2':case '3':case '4':case '5':case '6':case '7':
 		{
-			if (card_input < p_prev->recent_card)
+			int temp_score;
+			temp_score = p_this->score + card_input - '0';
+			if (temp_score < p_prev->score)
 			{
-				flag = 1;//重来
+				flag = 1;//重来				
 				break;
 			}
 
@@ -422,7 +430,13 @@ int judge(player *p_this, player* p_prev)
 		}
 		case 'b':
 		{
-			p_prev->bolt(p_prev->recent_card);
+			if (p_prev->score_ini > p_this->score)
+			{
+				flag = 5;
+				break;
+			}
+
+				p_prev->bolt(p_prev->recent_card);
 			p_this->play_card(card_input);
 			flag = 0;
 			break;
@@ -437,11 +451,14 @@ int judge(player *p_this, player* p_prev)
 			}
 			else
 			{
-				if (card_input < p_prev->recent_card)
+				int temp_score;
+				temp_score = p_this->score + card_input - '0';
+				if (temp_score < p_prev->score)
 				{
-					flag = 1;//重来
+					flag = 1;//重来				
 					break;
 				}
+
 
 				if (p_this->play_card(card_input) != 0)
 				{
@@ -458,7 +475,11 @@ int judge(player *p_this, player* p_prev)
 		}
 		case 'm':
 		{
-
+			if (p_this->score > p_prev->score)
+			{
+				flag = 1;
+				break;
+			}
 
 			int temp;
 			temp = p_this->score;
@@ -470,16 +491,11 @@ int judge(player *p_this, player* p_prev)
 		}
 
 		case '0': {
-			if (p_prev->recent_card == '0')
-			{
-				return 99;
-			}
-			else
-			{
-				flag = 0;
-				p_this->recent_card = '0';
-				break;
-			}
+
+			flag = 0;
+			p_this->recent_card = '0';
+			break;
+
 
 		}
 		}// switch
@@ -491,7 +507,13 @@ int judge(player *p_this, player* p_prev)
 		}
 		if (flag == 1)
 		{
-			cout << "\nlast card:" << p_prev->recent_card << endl;
+			cout << "\nopponent's score:" << p_prev->score << endl;
+			cout << "not big enough\n";
+			continue;
+		}
+		if (flag == 5)
+		{
+			cout << "\nopponent's bolted score:" << p_prev->score_ini << endl;
 			cout << "not big enough\n";
 			continue;
 		}
