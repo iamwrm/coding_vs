@@ -13,12 +13,15 @@ using namespace std;
 class database
 {
 public:
+	string name;
 	vector<string> heading;
 	vector<vector<string>> mlist;
+	
+
 	void add_one_person(vector<string> & input_person);
 	void print_database(ostream &f_cout);
 	void scan_database(fstream& database_file_in);
-	database();
+	database(std::string name);
 };
 
 void close_sentence();
@@ -28,7 +31,8 @@ void show_error(int flag);
 
 int main()
 {
-	database b1;
+	string name_of_b1 = "Persons";
+	database b1(name_of_b1);
 
 	fstream database_file_in;
 	database_file_in.open("testin.txt", std::ostream::in);
@@ -163,8 +167,11 @@ void database::scan_database(fstream & database_file_in)
 
 }
 
-database::database()
+database::database(std::string name_input)
 {
+	name = name_input;
+
+
 	std::string a1, a2, a3, a4;
 	a1 = "LastName";
 	a2 = "FirstName";
