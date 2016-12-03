@@ -12,6 +12,7 @@ public:
 	vector<vector<string>> mlist;
 	void add_one_person(vector<string> & input_person);
 	void print_database(ostream &f_cout);
+	void scan_database(fstream& database_file_in);
 };
 
 void close_sentence();
@@ -20,15 +21,22 @@ void process_com(string command, int &flag);
 int main()
 {
 	database b1;
+
+	fstream database_file_in;
+	database_file_in.open("testin.txt", std::ostream::in);
+
+	// import from file
+	b1.scan_database(database_file_in);
+
+
+/*
 	vector<string> testv1;
-	string s1 = "Wang", s2 = "Ren 1", s3 = "Dong",s4="Shang hai";
+	string s1 = "wrewrwerewr", s2 = "Ren 1", s3 = "Dong", s4 = "Shanghai";
 	testv1.push_back(s1);
 	testv1.push_back(s2);
 	testv1.push_back(s3);
 	testv1.push_back(s4);
-
-
-	b1.add_one_person(testv1);
+	b1.add_one_person(testv1);*/
 
 
 	int call_exit = 0;
@@ -47,13 +55,13 @@ int main()
 	//close sentence
 	close_sentence();
 
-	
+
 
 
 	//saving into file
 	fstream database_file_out;
 	database_file_out.open("testout.txt", std::ostream::out);
-	b1.print_database( database_file_out);
+	b1.print_database(database_file_out);
 	database_file_out.close();
 
 	cin.get();
@@ -72,12 +80,12 @@ void close_sentence()
 }
 
 //flag 1:exit
-void process_com(string command,int &flag)
+void process_com(string command, int &flag)
 {
 	if (command == "exit")
 	{
 		flag = 1;
-	} 
+	}
 }
 
 
@@ -97,4 +105,30 @@ void database::print_database(ostream &f_cout)
 		}
 		f_cout << endl;
 	}
+}
+
+void database::scan_database(fstream & database_file_in)
+{
+	string buffer_line;
+	while (getline(database_file_in, buffer_line, '\n'))
+	{
+
+		// avoid adding an unneeded \n
+		if (buffer_line.size() == 0)
+		{
+			break;
+		}
+
+		vector<string> one_line_from_file;
+		for (int i = 0, j = 0; i < buffer_line.size(); i++)
+		{
+			if (buffer_line[i] == '|')
+			{
+				one_line_from_file.push_back(buffer_line.substr(j, i - j));
+				j = i + 1;
+			}
+		}
+		mlist.push_back(one_line_from_file);
+	}
+
 }
