@@ -26,7 +26,7 @@ public:
 };
 
 void close_sentence();
-void process_com(string command, int &flag, database b1);
+void process_com(string command, int &flag, database &b1);
 void command_print_help();
 void show_error(int flag);
 
@@ -73,7 +73,7 @@ int main()
 
 	//saving into file
 	fstream database_file_out;
-	database_file_out.open("testout.txt", std::ostream::out);
+	database_file_out.open("testin.txt", std::ostream::out);
 	b1.print_database(database_file_out, 4);
 	database_file_out.close();
 
@@ -92,7 +92,7 @@ void close_sentence()
 }
 
 
-void process_com(string command, int &flag, database b1)
+void process_com(string command, int &flag, database &b1)
 {
 	if (command.size() == 0)
 	{
@@ -107,8 +107,6 @@ void process_com(string command, int &flag, database b1)
 	{
 		command = command.erase(command.size() - 1, 1);
 	}
-
-
 
 
 	if (command == "exit")
@@ -168,10 +166,36 @@ void process_com(string command, int &flag, database b1)
 			}
 		}
 
+		flag = VALID;
+		return;
+	}
 
+	// INSERT INTO Persons VALUES ('Gates', 'Bill', 'Xuanwumen 10', 'Beijing')
+	if (command[0] == 'I')
+	{
+		vector<string> a_person;
+		int i = 0;
+		int j = 0;
+		while (i<command.size())
+		{
+			if (command[i] == '\'')
+			{
+				for (j = i+1; j < command.size(); j++)
+				{
+					if (command[j] == '\'')
+					{
+						a_person.push_back(command.substr(i + 1, j - i - 1));
+						i = j;
+						break;
+					}
+				}
+				
+			}
 
-
-
+			i++;
+		}
+		
+		b1.mlist.push_back(a_person);
 		flag = VALID;
 		return;
 	}
@@ -230,7 +254,7 @@ void database::print_database(ostream &f_cout, int num)
 	}
 
 
-
+	
 	for (int i = 0; i < mlist.size(); i++)
 	{
 		f_cout.setf(ios::left);
@@ -246,9 +270,11 @@ void database::print_database(ostream &f_cout, int num)
 			}
 			f_cout << endl;
 		}
+
+
 		for (int j = 0; j < mlist[i].size(); j++)
 		{
-			if ((j == num)||(num==4))
+			if ((j == num) || (num == 4))
 			{
 				f_cout << setw(length[j]) << mlist[i][j];
 				f_cout << "|";
@@ -275,29 +301,24 @@ void database::scan_database(fstream & database_file_in)
 		{
 			break;
 		}
-		
-		int ii = 0;
-		cout << buffer_line<<endl;
-		while (ii < buffer_line.size()-1 )
-		{
-			
 
+		int ii = 0;
+		while (ii < buffer_line.size() )
+		{
 			if ((buffer_line[ii] == ' ') && (buffer_line[ii + 1] == '|'))
 			{
-				cout << "\nbufferline ii+1 " << buffer_line[ii + 1] <<ii<< endl;
 				buffer_line.erase(ii, 1);
 				ii = 0;
 			}
-			
 			ii++;
 		}
+
 
 		vector<string> one_line_from_file;
 		for (int i = 0, j = 0; i < buffer_line.size(); i++)
 		{
 			if (buffer_line[i] == '|')
 			{
-				cout << buffer_line.substr(j, i - j)<<"///";
 				one_line_from_file.push_back(buffer_line.substr(j, i - j));
 				j = i + 1;
 			}
