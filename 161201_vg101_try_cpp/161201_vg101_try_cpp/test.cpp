@@ -210,6 +210,8 @@ void database::print_database(ostream &f_cout, int num)
 		}
 	}
 
+
+	//calculating the largest length for every coloumn
 	vector<int> length(4, 0);
 	for (int i = 0; i < heading.size(); i++)
 	{
@@ -273,12 +275,29 @@ void database::scan_database(fstream & database_file_in)
 		{
 			break;
 		}
+		
+		int ii = 0;
+		cout << buffer_line<<endl;
+		while (ii < buffer_line.size()-1 )
+		{
+			
+
+			if ((buffer_line[ii] == ' ') && (buffer_line[ii + 1] == '|'))
+			{
+				cout << "\nbufferline ii+1 " << buffer_line[ii + 1] <<ii<< endl;
+				buffer_line.erase(ii, 1);
+				ii = 0;
+			}
+			
+			ii++;
+		}
 
 		vector<string> one_line_from_file;
 		for (int i = 0, j = 0; i < buffer_line.size(); i++)
 		{
 			if (buffer_line[i] == '|')
 			{
+				cout << buffer_line.substr(j, i - j)<<"///";
 				one_line_from_file.push_back(buffer_line.substr(j, i - j));
 				j = i + 1;
 			}
