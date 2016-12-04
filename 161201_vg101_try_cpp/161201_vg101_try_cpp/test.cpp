@@ -16,7 +16,7 @@ public:
 	string name;
 	vector<string> heading;
 	vector<vector<string>> mlist;
-	
+
 
 	void add_one_person(vector<string> & input_person);
 	void print_database(ostream &f_cout);
@@ -25,8 +25,8 @@ public:
 };
 
 void close_sentence();
-void process_com(string command, int &flag);
-void print_help();
+void process_com(string command, int &flag, database b1);
+void command_print_help();
 void show_error(int flag);
 
 int main()
@@ -35,7 +35,7 @@ int main()
 	database b1(name_of_b1);
 
 	fstream database_file_in;
-	database_file_in.open("testin.txt", std::ostream::in);
+	database_file_in.open("testout.txt", std::ostream::in);
 
 	// import from file
 	b1.scan_database(database_file_in);
@@ -51,18 +51,18 @@ int main()
 	b1.add_one_person(testv1);*/
 
 	cout << "Welcome to my sql database\n"
-		<<"You can enter -h to get help\n";
+		<< "You can enter -h to get help\n";
 	int flag = INITIAL;
-	while (flag != EXIT )
+	while (flag != EXIT)
 	{
 		flag = INITIAL;
 
 		cout << "  >";
 
 		string input;
-		cin >> input;
+		getline(cin, input, '\n');
 
-		process_com(input, flag);
+		process_com(input, flag, b1);
 
 		show_error(flag);
 	}
@@ -90,9 +90,26 @@ void close_sentence()
 	_sleep(1000);
 }
 
-//flag 1:exit
-void process_com(string command, int &flag)
+
+void process_com(string command, int &flag, database b1)
 {
+	if (command.size() == 0)
+	{
+		flag = VALID;
+		return;
+	}
+	while (command[0] == ' ')
+	{
+		command = command.erase(0, 1);
+	}
+	while (command[command.size() - 1] == ' ')
+	{
+		command = command.erase(command.size() - 1, 1);
+	}
+
+
+
+
 	if (command == "exit")
 	{
 		flag = EXIT;
@@ -100,22 +117,57 @@ void process_com(string command, int &flag)
 	}
 	if (command == "-h")
 	{
-		print_help();
+		command_print_help();
+		flag = VALID;
+		return;
+	}
+	if (command.substr(0, 4) == "show")
+	{
+		b1.print_database(std::cout);
+		flag = VALID;
+		return;
+	}
+	if (command[0] == 'S')
+	{
+
+		//---pick up the second arg
+		int i = 0;
+		while (i < command.size())
+		{
+			i++;
+			if ((command[i - 1] == ' ') && (command[i] != ' '))
+			{
+				break;
+			}
+		}
+		int j = i;
+		while (j < command.size())
+		{
+			j++;
+			if ((command[j - 1] != ' ') && (command[j] == ' '))
+			{
+				break;
+			}
+		}
+		//------------------------
+		string column_name;
+		column_name = command.substr(i, j - i + 1);
+
 		flag = VALID;
 		return;
 	}
 
-
 }
 
-void print_help()
+void command_print_help()
 {
-	cout <<"You can use the following commands\n"
-		<< "Enter exit to exit\n";
+	cout << "You can use the following commands\n"
+		<< "Enter exit to exit\n"
+		<< "Enter show to show the database in memory\n";
 }
 
 void show_error(int flag)
-{	
+{
 	if (flag == INITIAL)
 	{
 		std::cout << "Invalid input. Try again\n";
