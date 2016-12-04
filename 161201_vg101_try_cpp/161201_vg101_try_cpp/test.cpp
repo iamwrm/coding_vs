@@ -36,7 +36,7 @@ int main()
 	database b1(name_of_b1);
 
 	fstream database_file_in;
-	database_file_in.open("testout.txt", std::ostream::in);
+	database_file_in.open("testin.txt", std::ostream::in);
 
 	// import from file
 	b1.scan_database(database_file_in);
@@ -157,7 +157,6 @@ void process_com(string command, int &flag, database b1)
 
 		if (column_name == "*")
 		{
-			cout << "*";
 			b1.print_database(cout, 4);
 		}
 
@@ -202,38 +201,70 @@ void database::add_one_person(vector<string> & input_person)
 
 void database::print_database(ostream &f_cout, int num)
 {
-	if (num != 4)
+	if (mlist.size() == 0)
 	{
-		for (int i = 0; i < mlist.size(); i++)
+		for (int i = 0; i < 4; i++)
 		{
-			for (int j = 0; j < mlist[i].size(); j++)
+			cout << heading[i] << "|";
+			return;
+		}
+	}
+
+	vector<int> length(4, 0);
+	for (int i = 0; i < heading.size(); i++)
+	{
+		length[i] = heading[i].size();
+	}
+
+	for (int i = 0; i < mlist.size(); i++)
+	{
+		for (int j = 0; j < mlist[i].size(); j++)
+		{
+			if (mlist[i][j].size() > length[j])
 			{
-				if (j == num)
+				length[j] = mlist[i][j].size();
+			}
+		}
+	}
+
+
+
+	for (int i = 0; i < mlist.size(); i++)
+	{
+		f_cout.setf(ios::left);
+		if (i == 0)
+		{
+			for (int j = 0; j < heading.size(); j++)
+			{
+				if ((j == num) || (num == 4))
 				{
-					f_cout << mlist[i][j];
+					f_cout << setw(length[j]) << heading[j];
 					f_cout << "|";
 				}
 			}
 			f_cout << endl;
 		}
-	}
-	else
-	{
-		for (int i = 0; i < mlist.size(); i++)
+		for (int j = 0; j < mlist[i].size(); j++)
 		{
-			for (int j = 0; j < mlist[i].size(); j++)
+			if ((j == num)||(num==4))
 			{
-				f_cout << mlist[i][j];
+				f_cout << setw(length[j]) << mlist[i][j];
 				f_cout << "|";
 			}
-			f_cout << endl;
 		}
+		f_cout << endl;
 	}
+
 }
 
 void database::scan_database(fstream & database_file_in)
 {
 	string buffer_line;
+	if (!(getline(database_file_in, buffer_line, '\n')))
+	{
+		return;
+	}
+
 	while (getline(database_file_in, buffer_line, '\n'))
 	{
 
