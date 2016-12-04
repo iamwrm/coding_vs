@@ -1,6 +1,7 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<iomanip>
 #include<vector>
 
 using namespace std;
@@ -19,7 +20,7 @@ public:
 
 
 	void add_one_person(vector<string> & input_person);
-	void print_database(ostream &f_cout);
+	void print_database(ostream &f_cout, int num);
 	void scan_database(fstream& database_file_in);
 	database(std::string name);
 };
@@ -73,7 +74,7 @@ int main()
 	//saving into file
 	fstream database_file_out;
 	database_file_out.open("testout.txt", std::ostream::out);
-	b1.print_database(database_file_out);
+	b1.print_database(database_file_out, 4);
 	database_file_out.close();
 
 	return 0;
@@ -123,13 +124,13 @@ void process_com(string command, int &flag, database b1)
 	}
 	if (command.substr(0, 4) == "show")
 	{
-		b1.print_database(std::cout);
+		b1.print_database(std::cout, 4);
 		flag = VALID;
 		return;
 	}
 	if (command[0] == 'S')
 	{
-
+		//SELECT column_name FROM table_name
 		//---pick up the second arg
 		int i = 0;
 		while (i < command.size())
@@ -151,7 +152,26 @@ void process_com(string command, int &flag, database b1)
 		}
 		//------------------------
 		string column_name;
-		column_name = command.substr(i, j - i + 1);
+		column_name = command.substr(i, j - i);
+		//cout << "||" << column_name << "||\n";
+
+		if (column_name == "*")
+		{
+			cout << "*";
+			b1.print_database(cout, 4);
+		}
+
+		for (int i = 0; i < 4; i++)
+		{
+			if (column_name == b1.heading[i])
+			{
+				b1.print_database(cout, i);
+			}
+		}
+
+
+
+
 
 		flag = VALID;
 		return;
@@ -180,16 +200,34 @@ void database::add_one_person(vector<string> & input_person)
 	mlist.push_back(input_person);
 }
 
-void database::print_database(ostream &f_cout)
+void database::print_database(ostream &f_cout, int num)
 {
-	for (int i = 0; i < mlist.size(); i++)
+	if (num != 4)
 	{
-		for (int j = 0; j < mlist[i].size(); j++)
+		for (int i = 0; i < mlist.size(); i++)
 		{
-			f_cout << mlist[i][j];
-			f_cout << "|";
+			for (int j = 0; j < mlist[i].size(); j++)
+			{
+				if (j == num)
+				{
+					f_cout << mlist[i][j];
+					f_cout << "|";
+				}
+			}
+			f_cout << endl;
 		}
-		f_cout << endl;
+	}
+	else
+	{
+		for (int i = 0; i < mlist.size(); i++)
+		{
+			for (int j = 0; j < mlist[i].size(); j++)
+			{
+				f_cout << mlist[i][j];
+				f_cout << "|";
+			}
+			f_cout << endl;
+		}
 	}
 }
 
