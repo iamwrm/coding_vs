@@ -23,12 +23,14 @@ public:
 	void print_database(ostream &f_cout, int num);
 	void scan_database(fstream& database_file_in);
 	database(std::string name);
+	void database::print_database(ostream &f_cout);
 };
 
 void close_sentence();
 void process_com(string command, int &flag, database &b1);
 void command_print_help();
 void show_error(int flag);
+
 
 int main()
 {
@@ -74,7 +76,7 @@ int main()
 	//saving into file
 	fstream database_file_out;
 	database_file_out.open("testin.txt", std::ostream::out);
-	b1.print_database(database_file_out, 4);
+	b1.print_database(database_file_out,4);
 	database_file_out.close();
 
 	return 0;
@@ -176,8 +178,10 @@ void process_com(string command, int &flag, database &b1)
 		vector<string> a_person;
 		int i = 0;
 		int j = 0;
+		int count = 0;
 		while (i < command.size())
 		{
+			if (count >= 4)break;
 			if (command[i] == '\'')
 			{
 				for (j = i + 1; j < command.size(); j++)
@@ -185,6 +189,7 @@ void process_com(string command, int &flag, database &b1)
 					if (command[j] == '\'')
 					{
 						a_person.push_back(command.substr(i + 1, j - i - 1));
+						count++;
 						i = j;
 						break;
 					}
@@ -247,6 +252,7 @@ void process_com(string command, int &flag, database &b1)
 			if (b1.mlist[i][ii] == column_value)
 			{
 				b1.mlist.erase(b1.mlist.begin() + i);
+				i = 0;
 			}
 		}
 
@@ -346,6 +352,7 @@ void database::scan_database(fstream & database_file_in)
 		return;
 	}
 
+	
 	while (getline(database_file_in, buffer_line, '\n'))
 	{
 
@@ -396,4 +403,18 @@ database::database(std::string name_input)
 	heading.push_back(a2);
 	heading.push_back(a3);
 	heading.push_back(a4);
+}
+
+void database::print_database(ostream &f_cout)
+{
+	for (int i = 0; i < mlist.size(); i++)
+	{
+		for (int j = 0; j < mlist[i].size(); j++)
+		{
+				f_cout << mlist[i][j];
+				f_cout << "|";
+		}
+		f_cout << endl;
+	}
+
 }
