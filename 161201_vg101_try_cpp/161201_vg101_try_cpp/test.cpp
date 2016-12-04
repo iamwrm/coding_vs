@@ -176,11 +176,11 @@ void process_com(string command, int &flag, database &b1)
 		vector<string> a_person;
 		int i = 0;
 		int j = 0;
-		while (i<command.size())
+		while (i < command.size())
 		{
 			if (command[i] == '\'')
 			{
-				for (j = i+1; j < command.size(); j++)
+				for (j = i + 1; j < command.size(); j++)
 				{
 					if (command[j] == '\'')
 					{
@@ -189,17 +189,70 @@ void process_com(string command, int &flag, database &b1)
 						break;
 					}
 				}
-				
+
 			}
 
 			i++;
 		}
-		
+
 		b1.mlist.push_back(a_person);
 		flag = VALID;
 		return;
 	}
 
+	if (command[0] == 'D')
+	{
+		int iii = 0;
+		while (iii < command.size())
+		{
+			if ((command[iii] == ' ') && (command[iii + 1] == '='))
+			{
+				command.erase(iii, 1);
+				iii = 0;
+			}
+			iii++;
+		}
+
+		string column_value;
+		int i = 0;
+		int j = 0;
+		while (i < command.size())
+		{
+			if (command[i] == '\'')
+			{
+				for (j = i + 1; j < command.size(); j++)
+				{
+					if (command[j] == '\'')
+					{
+						column_value = command.substr(i + 1, j - i - 1);
+						i = j;
+						break;
+					}
+				}
+			}
+			i++;
+		}
+
+		string column_name;
+		for (i = command.size() - 1; command[i] != '='; i--);
+		for (j = i; command[j] != ' '; j--);
+		column_name = command.substr(j + 1, i - j - 1);
+		//cout << "value" << column_value << "|name" << column_name << endl;
+
+		int ii = 0;
+		for (ii = 0; (b1.heading[ii] != column_name) && (ii < b1.heading.size()); ii++);
+		//cout << ii;
+		for (int i = 0; i < b1.mlist.size(); i++)
+		{
+			if (b1.mlist[i][ii] == column_value)
+			{
+				b1.mlist.erase(b1.mlist.begin() + i);
+			}
+		}
+
+		flag = VALID;
+		return;
+	}
 }
 
 void command_print_help()
@@ -254,7 +307,7 @@ void database::print_database(ostream &f_cout, int num)
 	}
 
 
-	
+
 	for (int i = 0; i < mlist.size(); i++)
 	{
 		f_cout.setf(ios::left);
@@ -303,7 +356,7 @@ void database::scan_database(fstream & database_file_in)
 		}
 
 		int ii = 0;
-		while (ii < buffer_line.size() )
+		while (ii < buffer_line.size())
 		{
 			if ((buffer_line[ii] == ' ') && (buffer_line[ii + 1] == '|'))
 			{

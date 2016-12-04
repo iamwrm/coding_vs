@@ -1,6 +1,4 @@
-LastName  |FirstName|Address     |City      |
-Wang1     |Ren 1    |Dong1       |Shang hai1|
-Wang      |Ren 1    |Dong        |Shanghai  |
-Wang1wrwrw|Ren 1    |Dong1       |Shang hai |
-Gates     |Bill     |Xuanwumen 10|Beijing   |
-Gates     |Bill     |Xuanwumen 10|Beijing   |
+LastName|FirstName|Address     |City   |
+Gates   |Bill     |Xuanwumen 10|Beijing|
+Gates   |Bill     |Xuanwumen 10|Beijing|
+Gates   |Bill     |Dong1       |Beijing|
