@@ -1,2 +1,11 @@
+<<<<<<< HEAD
 LastName|FirstName|Address|City|
 a       |b        |c      |d   |
+=======
+LastName|FirstName|Address     |City   |
+Gates   |Bill     |Xuanwumen 10|Beijing|
+Gates   |Billss   |Xuanwumen 10|Beijing|
+Gates   |Billss   |Xuanwumen 10|Beijing|
+Gates   |Billss   |Xuanwumen 10|Beijing|
+Gates   |Billss   |Xuanwumen 10|Beijing|
+>>>>>>> 5f774805ba3786c0bdbc3b0b54d1a8083b84413a
