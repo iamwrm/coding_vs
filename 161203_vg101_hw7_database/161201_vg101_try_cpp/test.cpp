@@ -1,8 +1,8 @@
-#include<iostream>
-#include<fstream>
-#include<string>
-#include<iomanip>
-#include<vector>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <iomanip>
+#include <vector>
 
 using namespace std;
 
@@ -23,7 +23,7 @@ public:
 	void print_database(ostream &f_cout, int num);
 	void scan_database(fstream& database_file_in);
 	database(std::string name);
-	void database::print_database(ostream &f_cout);
+	void print_database(ostream &f_cout);
 };
 
 void close_sentence();
@@ -44,14 +44,6 @@ int main()
 	b1.scan_database(database_file_in);
 
 
-
-	/*vector<string> testv1;
-	string s1 = "wrewrwerewr", s2 = "Ren 1", s3 = "Dong", s4 = "Shanghai";
-	testv1.push_back(s1);
-	testv1.push_back(s2);
-	testv1.push_back(s3);
-	testv1.push_back(s4);
-	b1.add_one_person(testv1);*/
 
 	cout << "Welcome to my sql database\n"<<"The database will create a test.txt to store data\nIf you don't have one, it will create one for you\n";
 	int flag = INITIAL;
@@ -87,9 +79,10 @@ void close_sentence()
 	for (int i = 0; i < 10; i++)
 	{
 		cout << ".";
-		_sleep(200);
+		//_sleep(200);
 	}
-	_sleep(1000);
+	cout<<endl;
+	//_sleep(1000);
 }
 
 
