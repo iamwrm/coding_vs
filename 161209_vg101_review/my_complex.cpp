@@ -13,7 +13,7 @@ class my_complex
         imag = imag_i;
     }
 
-    my_complex operator+( const my_complex &b) const
+    my_complex operator+(const my_complex &b) const
     {
         my_complex temp;
         temp.real = this->real + b.real;
@@ -24,6 +24,21 @@ class my_complex
     {
         std::cout << real << "+" << imag << std::endl;
     }
+
+    my_complex operator-(const my_complex &b) const
+    {
+        my_complex temp;
+        temp.real = this->real - b.real;
+        temp.imag = this->imag - b.imag;
+        return temp;
+    }
+    my_complex operator*(const my_complex &b) const
+    {
+        my_complex temp;
+        temp.real = this->real * b.real - this->imag * b.imag;
+        temp.imag = this->real * b.imag + this->imag * b.real;
+        return temp;
+    }
 }
 
 ;
@@ -33,13 +48,12 @@ int main()
     my_complex m1(1, 2);
     my_complex m2(2, 3);
 
-    my_complex m3;
+    my_complex m3, m4;
 
-    m3=m1+m2;
+    m3 = m1 * m2;
+    m4 = m1 - m2;
 
     m3.show();
-
+    m4.show();
     std::cin.get();
-
-    
 }

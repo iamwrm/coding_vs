@@ -60,8 +60,12 @@ push_back()
 
 ## 实现复数类
 
-TODO:自己实现复数类，带上operator overlording
+自己实现复数类，带上operator overlording 
 ``my_complex.cpp``
+完成了加法减法和乘法的重载
+
+
+
 ## new 和 delete
 
 delete[]	释放数组
