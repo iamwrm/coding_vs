@@ -1,8 +1,6 @@
 ﻿# vg101 final
 
-标签（空格分隔）： review
 
----
 
 
 ## 一把包括所有的头文件
@@ -43,10 +41,15 @@ sort(v.begin(), v.end());
 函数重载
 
 ## extern
+可以不用
+
 
 ## getline
 返回值	两类参数表
-
+```
+istream& getline (istream& is, string& str, char delim); // end when find delim
+istream& getline (istream& is, string& str);
+```
 
 
 
@@ -58,7 +61,7 @@ push_back()
 ## 实现复数类
 
 TODO:自己实现复数类，带上operator overlording
-
+``my_complex.cpp``
 ## new 和 delete
 
 delete[]	释放数组
