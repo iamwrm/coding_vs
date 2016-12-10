@@ -3,7 +3,7 @@
 
 
 
-## 一把包括所有的头文件
+# 一把包括所有的头文件
 ```
 #include <iostream>
 #include <string>
@@ -19,7 +19,7 @@ using namespace std;
 
 
 
-## 使用流来分隔一行的多个单词
+# 使用流来分隔一行的多个单词
 ``my_stringstream.cpp`` 已实现
 
 ```
@@ -41,13 +41,13 @@ sort(v.begin(), v.end());
 
 用``endl`` 代替 `` \n ``
 
-函数重载
+# 函数重载
 
-## extern
+# extern
 可以不用
 
 
-## getline
+# getline
 返回值	两类参数表
 ```
 istream& getline (istream& is, string& str, char delim); // end when find delim
@@ -57,11 +57,9 @@ istream& getline (istream& is, string& str);
 
 
 
-## vector
-push_back()
 
 
-## 实现复数类
+# 实现复数类
 
 自己实现复数类，带上operator overlording 
 ``my_complex.cpp``
@@ -69,45 +67,43 @@ push_back()
 
 
 
-## new 和 delete
+# new 和 delete
 
 delete[]	释放数组
 
-## operator
+# operator
 
 一元和二元
 （一定要实现）
 复习slide
 
 
-## file IO
+# file IO
 ```
 fstream database_file_in;
 database_file_in.open("test.txt", std::ostream::in);
 ```
 
-## reverse
+# 自带函数
+reverse
 find
 sort
-自带函数
 
 
-## bmp
+
+# bmp
 会用jigang的代码 save load
 example code
 
 
-## 关键 字符处理
+# 关键 字符处理
 
-## algorithm 库函数中的自带函数
+# algorithm 库函数中的自带函数
 find
 sort
 reverse
 
-# 成员函数
-vector
-
-string
+# 成员函数 vector string
 
 # vector 
 ## iterator
@@ -132,10 +128,10 @@ s.front();
 
 
 
-## 例题
+# 例题
 去年的题是自己实现rational number
 
-## 例题 for 最后一题
+# 例题 for 最后一题
 自定义类
 矩阵
 Mat(row,column)
@@ -144,10 +140,19 @@ Mat(row,column)
 把矩阵 逐行 print 出来
 (实现一个自己的类)
 
-## TODO
+# TODO
 自己实现 complex string matrix 
+
+
 # iterator
 使用 it 来下标访问，遍历、
+```
+std::string s1("helloworld");
+for(auto it=s1.begin();it!=s1.end();it++)
+{
+	cout<<*(it);	
+}
 
+```
 
 
