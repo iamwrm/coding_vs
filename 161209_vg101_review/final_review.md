@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <sstream>
 #include <cstdlib>
+using namespace std;
 ```
 
 
@@ -19,6 +20,8 @@
 
 
 ## 使用流来分隔一行的多个单词
+``my_stringstream.cpp`` 已实现
+
 ```
 #include <sstream>
 
@@ -143,7 +146,6 @@ Mat(row,column)
 
 ## TODO
 自己实现 complex string matrix 
-
 # iterator
 使用 it 来下标访问，遍历、
 
