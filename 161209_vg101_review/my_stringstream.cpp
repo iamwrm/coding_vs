@@ -23,5 +23,7 @@ int main()
         cout << *it << endl;
     }
 
+
+	cin.get();
     return 0;
 }
