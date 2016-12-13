@@ -85,7 +85,7 @@ int main()
 
 	my_rationalnum m1,m2;
 
-	m1.upper="1";
+	m1.upper="-1";
 	m1.lower="12";
 	m1.show();
 
